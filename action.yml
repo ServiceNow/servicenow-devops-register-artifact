@@ -3,10 +3,13 @@ description: 'Register Artifact Details in ServiceNow'
 inputs:
   devops-integration-user-name:
     description: 'Devops Integration User Name'
-    required: true
+    required: false
   devops-integration-user-password:
     description: 'Devops Integration User Password'
-    required: true
+    required: false
+  devops-integration-token:
+    description: 'Devops Integration Token'
+    required: false
   instance-url: 
     description: 'ServiceNow Instance URL'
     required: true
