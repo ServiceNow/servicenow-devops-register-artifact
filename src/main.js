@@ -55,7 +55,7 @@ const axios = require('axios');
             core.setFailed('Either secret token or integration username, password is needed for integration user authentication');
         }
         else if(token !== '') {
-            endpoint = `${instanceUrl}/api/sn_devops/devops/artifact/registration?orchestrationToolId=${toolId}`;
+            endpoint = `${instanceUrl}/api/sn_devops/v2/devops/artifact/registration?orchestrationToolId=${toolId}`;
             const defaultHeadersForToken = {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
