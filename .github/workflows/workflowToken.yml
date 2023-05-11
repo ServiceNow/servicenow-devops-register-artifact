@@ -1,0 +1,44 @@
+name: workflowToken
+
+on:
+  workflow_dispatch:
+    
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+  
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set Node.js 14.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Compile
+      run: npm run build
+  registerartifact:
+    needs: build
+    runs-on: ubuntu-latest
+    name: ServiceNow Register Artifact
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: ServiceNow Register Artifact
+        uses: ./ 
+        id: update
+        with:
+          devops-integration-token: ${{ secrets.SN_DEVOPS_INTEGRATION_TOKEN }}
+          instance-url: ${{ secrets.SN_INSTANCE_URL }}
+          tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
+          context-github: ${{ toJSON(github) }}
+          job-name: 'ServiceNow Register Artifact'
+          artifacts: '[{"name": "com:customactiondemo","version": "1.${{ github.run_number }}","semanticVersion": "1.${{ github.run_number }}.0","repositoryName": "${{ github.repository }}"}]'
