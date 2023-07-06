@@ -5,8 +5,9 @@ const axios = require('axios');
 (async function main() {
     let instanceUrl = core.getInput('instance-url', { required: true });
     const toolId = core.getInput('tool-id', { required: true });
-    const username = core.getInput('devops-integration-user-name', { required: true });
-    const password = core.getInput('devops-integration-user-password', { required: true });
+    const username = core.getInput('devops-integration-user-name', { required: false });
+    const password = core.getInput('devops-integration-user-password', { required: false });
+    const token = core.getInput('devops-integration-token', { required: false });
     const jobName = core.getInput('job-name', { required: true });
 
     let artifacts = core.getInput('artifacts', { required: true });
@@ -47,20 +48,39 @@ const axios = require('axios');
     }
 
     let snowResponse;
-    const endpoint = `${instanceUrl}/api/sn_devops/devops/artifact/registration?orchestrationToolId=${toolId}`;
-
+    let endpoint = '';
+    let httpHeaders = {};
     try {
-        const token = `${username}:${password}`;
-        const encodedToken = Buffer.from(token).toString('base64');
+        if(token === '' && username === '' && password === '') {
+            core.setFailed('Either secret token or integration username, password is needed for integration user authentication');
+        }
+        else if(token !== '') {
+            endpoint = `${instanceUrl}/api/sn_devops/v2/devops/artifact/registration?orchestrationToolId=${toolId}`;
+            const defaultHeadersForToken = {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'sn_devops.DevOpsToken '+`${toolId}:${token}`
+            };
 
-        const defaultHeaders = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Basic ' + `${encodedToken}`
-        };
+            httpHeaders = { headers: defaultHeadersForToken };
+            snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
+        }
+        else if(username !== '' && password !== '') {
+            endpoint = `${instanceUrl}/api/sn_devops/v1/devops/artifact/registration?orchestrationToolId=${toolId}`;
+            const tokenBasicAuth = `${username}:${password}`;
+            const encodedTokenForBasicAuth = Buffer.from(tokenBasicAuth).toString('base64');;
+            const defaultHeadersForBasicAuth = {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Basic ' + `${encodedTokenForBasicAuth}`
+            };
 
-        let httpHeaders = { headers: defaultHeaders };
-        snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
+            httpHeaders = { headers: defaultHeadersForBasicAuth };
+            snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
+        }
+        else {
+            core.setFailed("For Basic Auth, Username and Password is mandatory for integration user authentication");
+        }
     } catch (e) {
         if (e.message.includes('ECONNREFUSED') || e.message.includes('ENOTFOUND') || e.message.includes('405')) {
             core.setFailed('ServiceNow Instance URL is NOT valid. Please correct the URL and try again.');
