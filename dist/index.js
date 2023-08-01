@@ -5234,7 +5234,7 @@ const axios = __nccwpck_require__(497);
     }
 
     let snowResponse;
-    const endpoint = `${instanceUrl}/api/sn_devops/v2/devops/artifact/registration?orchestrationToolId=${toolId}`;
+    const endpoint = `${instanceUrl}/api/sn_devops/devops/artifact/registration?orchestrationToolId=${toolId}`;
 
     try {
         const token = `${username}:${password}`;
@@ -5254,7 +5254,7 @@ const axios = __nccwpck_require__(497);
         } else if (e.message.includes('401')) {
             core.setFailed('Invalid Credentials. Please correct the credentials and try again.');
         } else {
-          console.log("Exception - "+JSON.stringify(e))
+          console.log("Exception - "+JSON.stringify(e));
           core.setFailed(`ServiceNow Artifact Versions are NOT created. Please check ServiceNow logs for more details. ${e}`);
         }
     }
