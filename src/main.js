@@ -91,8 +91,8 @@ const axios = require('axios');
 
             core.setFailed("Exception :"+JSON.stringify(e));
 
-            core.setFailed("Header :"+e.response.header+", Data :"+e.response.data);
-            core.setFailed(JSON.stringify(e.response));
+            core.setFailed("Header :"+e.headers+", Data :"+e.data);
+//            core.setFailed(JSON.stringify(e.response));
 
             core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.response}`);            
         } else {
