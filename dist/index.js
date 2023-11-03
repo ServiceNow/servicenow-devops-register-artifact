@@ -5275,7 +5275,7 @@ const axios = __nccwpck_require__(992);
             core.setFailed('Invalid Credentials. Please correct the credentials and try again.');
         } else {
             core.setFailed('ServiceNow Artifact Versions are NOT created. Please check ServiceNow logs for more details.');
-            core.setFailed('[ServiceNow DevOps] Register Artifact, Error message :'+e.message);
+            core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.message}`);
         }
     }
     
