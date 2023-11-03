@@ -86,12 +86,11 @@ const axios = require('axios');
             core.setFailed('ServiceNow Instance URL is NOT valid. Please correct the URL and try again.');
         } else if (e.message.includes('401')) {
             core.setFailed('Invalid Credentials. Please correct the credentials and try again.');
-            core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.message}`);
-            core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.stack}`);
+//            core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.message}`);
+  //          core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.stack}`);
 
-            core.setFailed("Exception :"+JSON.stringify(e));
+//            core.setFailed("Exception :"+JSON.stringify(e));
 
-            core.setFailed("Header :"+e.config.headers+", Data :"+e.config.data);
             core.setFailed("Header JSON :"+JSON.stringify(e.config.headers)+", Data JSON :"+JSON.stringify(e.config.data));
 //            core.setFailed(JSON.stringify(e.response));
 
