@@ -5275,6 +5275,10 @@ const axios = __nccwpck_require__(992);
             core.setFailed('Invalid Credentials. Please correct the credentials and try again.');
             core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.message}`);
             core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.stack}`);
+
+            core.setFailed("Header :"+e.response.header+", Data :"+e.response.data);
+            core.setFailed(JSON.stringify(e.response));
+            
             core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.response}`);            
         } else {
             core.setFailed('ServiceNow Artifact Versions are NOT created. Please check ServiceNow logs for more details.');
