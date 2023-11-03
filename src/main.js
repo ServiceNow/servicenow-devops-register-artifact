@@ -89,6 +89,7 @@ const axios = require('axios');
         } else {
             core.setFailed('ServiceNow Artifact Versions are NOT created. Please check ServiceNow logs for more details.');
             core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.message}`);
+            core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${err.stack}`);
         }
     }
     
