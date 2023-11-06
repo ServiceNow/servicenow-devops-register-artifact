@@ -82,6 +82,10 @@ const axios = require('axios');
             }
         })
         .catch(error => {
+            console.error('Request Samapth Error:', error.response);
+            console.error('Request Samapth Error :'+JSON.stringify(error.response));
+            core.setFailed('Request Samapth Error :'+error.response);
+            core.setFailed('Request Samapth Error :'+JSON.stringify(error.response));
             console.error('Request Error:', error.message);
             core.setFailed('Request Error :'+error);
             core.setFailed('Request Error String :'+JSON.stringify(error));
