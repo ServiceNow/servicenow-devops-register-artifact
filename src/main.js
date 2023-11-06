@@ -131,6 +131,7 @@ function debugCircularObject(obj, depth = 3) {
                 //console.log('Circular object parsing started');
 //                debugCircularObject(e.response);
                 core.debug('[ServiceNow DevOps] Response object :',e.response.data);
+                console.error('console.error, [ServiceNow DevOps] Response object :',e.response.data);
             }
         } else if(e.message.includes('400') || e.message.includes('404')){
             let errMsg = '[ServiceNow DevOps] Artifact Registration is not Successful. ';
