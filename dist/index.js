@@ -5269,16 +5269,19 @@ const axios = __nccwpck_require__(992);
 
             axios.post(endpoint, JSON.stringify(payload),{headers: httpHeaders})
               .then(response => {
+                core.setFailed("Response object :"+response);
+                core.setFailed("Response object :"+JSON.stringify(response));
                 console.log("Response object :"+response);
                 console.log("Response object String :"+JSON.stringify(response));
                 if (response.status === 400) {
                 // Access the complete response body
                     const errorResponse = response.data;
-                console.log('API Error Response:', errorResponse);
+                    console.log('API Error Response:', errorResponse);
+                    core.setFailed('API Error Response:', errorResponse);
                 } else {
                 // Handle other response codes
-                const responseData = response.data;
-                console.log('API Response Data:', responseData);
+                    const responseData = response.data;
+                    core.setFailed('API Response Data:', responseData);
                 }
             })
             .catch(error => {
@@ -5304,7 +5307,7 @@ const axios = __nccwpck_require__(992);
 
 
               core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.message}`);
-              core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :JSON.stringify()`);
+              core.setFailed("[ServiceNow DevOps] Register Artifact, Error message :"+JSON.stringify(e.message));
 
   //          core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.stack}`);
 
