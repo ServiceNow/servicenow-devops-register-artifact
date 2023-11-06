@@ -5251,7 +5251,7 @@ const axios = __nccwpck_require__(992);
 
             httpHeaders = { headers: defaultHeadersForToken };
           //  snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
-          axios.post(endpoint, JSON.stringify(payload),{headers: httpHeaders})
+          axios.post(endpoint, payload,{headers: httpHeaders})
           .then(response => {
             core.setFailed("Response object :"+response);
             core.setFailed("Response object :"+JSON.stringify(response));
