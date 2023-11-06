@@ -2,6 +2,42 @@ const core = require('@actions/core');
 const axios = require('axios');
 //const CircularJSON = require('circular-json');
 
+function debugCircularObject(obj, depth = 3) {
+
+    const cache = new WeakSet();
+   
+    function debugObject(obj, currentDepth) {
+  
+      if (currentDepth >= depth || !obj || typeof obj !== 'object') return;
+  
+      if (cache.has(obj)) {
+  
+        core.debug('[Circular Reference]');
+  
+        return;
+  
+      }
+   
+      cache.add(obj);
+   
+      for (const key in obj) {
+  
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+  
+          core.debug(`${'  '.repeat(currentDepth)}${key}:`);
+  
+          debugObject(obj[key], currentDepth + 1);
+  
+        }
+  
+      }
+  
+    }
+   
+    debugObject(obj, 0);
+  
+  }
+  
 
 (async function main() {
     let instanceUrl = core.getInput('instance-url', { required: true });
@@ -92,6 +128,7 @@ const axios = require('axios');
             {
                 //const jsonString = CircularJSON.stringify(e.response);
                 console.error('e.response in console error :',e.response);
+                console.log('Circular object parsing started');
                 debugCircularObject(e.response);
                 //core.debug('[ServiceNow DevOps] Response object :',jsonString);
             }
@@ -116,43 +153,6 @@ const axios = require('axios');
         }
     }
     
-},
-
-function debugCircularObject(obj, depth = 3) {
-
-  const cache = new WeakSet();
- 
-  function debugObject(obj, currentDepth) {
-
-    if (currentDepth >= depth || !obj || typeof obj !== 'object') return;
-
-    if (cache.has(obj)) {
-
-      core.debug('[Circular Reference]');
-
-      return;
-
-    }
- 
-    cache.add(obj);
- 
-    for (const key in obj) {
-
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-
-        core.debug(`${'  '.repeat(currentDepth)}${key}:`);
-
-        debugObject(obj[key], currentDepth + 1);
-
-      }
-
-    }
-
-  }
- 
-  debugObject(obj, 0);
-
-}
- 
+} 
 
 )();

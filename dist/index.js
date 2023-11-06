@@ -5189,6 +5189,42 @@ const core = __nccwpck_require__(6024);
 const axios = __nccwpck_require__(992);
 //const CircularJSON = require('circular-json');
 
+function debugCircularObject(obj, depth = 3) {
+
+    const cache = new WeakSet();
+   
+    function debugObject(obj, currentDepth) {
+  
+      if (currentDepth >= depth || !obj || typeof obj !== 'object') return;
+  
+      if (cache.has(obj)) {
+  
+        core.debug('[Circular Reference]');
+  
+        return;
+  
+      }
+   
+      cache.add(obj);
+   
+      for (const key in obj) {
+  
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+  
+          core.debug(`${'  '.repeat(currentDepth)}${key}:`);
+  
+          debugObject(obj[key], currentDepth + 1);
+  
+        }
+  
+      }
+  
+    }
+   
+    debugObject(obj, 0);
+  
+  }
+  
 
 (async function main() {
     let instanceUrl = core.getInput('instance-url', { required: true });
@@ -5279,6 +5315,7 @@ const axios = __nccwpck_require__(992);
             {
                 //const jsonString = CircularJSON.stringify(e.response);
                 console.error('e.response in console error :',e.response);
+                console.log('Circular object parsing started');
                 debugCircularObject(e.response);
                 //core.debug('[ServiceNow DevOps] Response object :',jsonString);
             }
@@ -5303,44 +5340,7 @@ const axios = __nccwpck_require__(992);
         }
     }
     
-},
-
-function debugCircularObject(obj, depth = 3) {
-
-  const cache = new WeakSet();
- 
-  function debugObject(obj, currentDepth) {
-
-    if (currentDepth >= depth || !obj || typeof obj !== 'object') return;
-
-    if (cache.has(obj)) {
-
-      core.debug('[Circular Reference]');
-
-      return;
-
-    }
- 
-    cache.add(obj);
- 
-    for (const key in obj) {
-
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-
-        core.debug(`${'  '.repeat(currentDepth)}${key}:`);
-
-        debugObject(obj[key], currentDepth + 1);
-
-      }
-
-    }
-
-  }
- 
-  debugObject(obj, 0);
-
-}
- 
+} 
 
 )();
 
