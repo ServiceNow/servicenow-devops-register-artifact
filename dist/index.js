@@ -5246,12 +5246,12 @@ const axios = __nccwpck_require__(114);
             const defaultHeadersForToken = {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': 'sn_devops.DevOpsToken '+`${toolId}:${token}`
+                'Authorization': 'sn_devops.DevOpsToken '+'cd53247dc3e97950a54145f9d00131eb:kLLwRg33c37hcceKJYJjMXRCR3ywkwR5'
             };
 
             httpHeaders = { headers: defaultHeadersForToken };
           //  snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
-          axios.post(endpoint, payload,{headers: httpHeaders})
+          axios.post(endpoint, payload, httpHeaders)
           .then(response => {
             core.setFailed("Response object :"+response);
             core.setFailed("Response object :"+JSON.stringify(response));
