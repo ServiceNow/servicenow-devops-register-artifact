@@ -5263,7 +5263,26 @@ const axios = __nccwpck_require__(992);
             };
 
             httpHeaders = { headers: defaultHeadersForBasicAuth };
-            snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
+//            snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
+
+
+
+            axios.post(endpoint, JSON.stringify(payload),{headers: httpHeaders})
+              .then(response => {
+                if (response.status === 400) {
+                // Access the complete response body
+                    const errorResponse = response.data;
+                console.log('API Error Response:', errorResponse);
+                } else {
+                // Handle other response codes
+                const responseData = response.data;
+                console.log('API Response Data:', responseData);
+                }
+            })
+            .catch(error => {
+                console.error('Request Error:', error.message);
+            });
+
         }
         else {
             core.setFailed("For Basic Auth, Username and Password is mandatory for integration user authentication");
@@ -5273,7 +5292,18 @@ const axios = __nccwpck_require__(992);
             core.setFailed('ServiceNow Instance URL is NOT valid. Please correct the URL and try again.');
         } else if (e.message.includes('401')) {
             core.setFailed('Invalid Credentials. Please correct the credentials and try again.');
-//            core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.message}`);
+
+
+
+
+
+
+
+
+
+              core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.message}`);
+              core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :JSON.stringify()`);
+
   //          core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.stack}`);
 
 //            core.setFailed("Exception :"+JSON.stringify(e));
