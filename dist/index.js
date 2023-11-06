@@ -5311,14 +5311,18 @@ function debugCircularObject(obj, depth = 3) {
                 console.error('console.error, [ServiceNow DevOps] Response object :',e.response.data);
                 //core.debug('[ServiceNow DevOps] Response object String :',JSON.stringify(e.response.data));
                 console.debug('console.debug response data :',e.response.data);
-                const chunks=[];
-                e.response.on("data", (chunk) => {
-                    chunks.push(chunk);
-                  });
-                let responseBodyStr = Buffer.concat(chunks).toString();
-                let responseBody = JSON.parse(responseBodyStr);
-                result = responseBody.result;
-                core.debug('core.debug, result string :',JSON.stringify(result));
+                const circularObject = e.response;
+
+// To print the object as JSON, you can use a custom replacer function
+                const jsonString = JSON.stringify(circularObject, (key, value) => {
+                if (key === 'response' && value === e.response) {
+                    return '[Circular]';
+                }
+                return value;
+                });
+
+                console.log("Circular object :"+jsonString);
+                core.debug('Circular object debug :'+jsonString);
           
             }
         } else if(e.message.includes('400') || e.message.includes('404')){
