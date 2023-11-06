@@ -83,6 +83,8 @@ const axios = require('axios');
         })
         .catch(error => {
             console.error('Request Error:', error.message);
+            core.setFailed('Request Error :'+error);
+            core.setFailed('Request Error String :'+JSON.stringify(error));
         });
     }
         else if(username !== '' && password !== '') {
