@@ -5429,7 +5429,22 @@ function debugCircularObject(obj, depth = 3) {
     debugObject(obj, 0);
   }
   
-
+  const circularObject = {};
+  circularObject.circularReference = circularObject;
+  
+  function circularSafeStringify(obj) {
+    const seen = new WeakSet();
+    return JSON.stringify(obj, (key, value) => {
+      if (typeof value === 'object' && value !== null) {
+        if (seen.has(value)) {
+          return '[Circular]';
+        }
+        seen.add(value);
+      }
+      return value;
+    });
+  }
+  
 (async function main() {
     let instanceUrl = core.getInput('instance-url', { required: true });
     const toolId = core.getInput('tool-id', { required: true });
@@ -5538,6 +5553,8 @@ function debugCircularObject(obj, depth = 3) {
                 var jsonString=CircularJSON.stringify(e.response.data);
                 console.log("Circular object :"+jsonString);
                 core.debug('Circular object debug :'+jsonString);
+                var stringResponseObject=circularSafeStringify(e.response);
+                core.debug('Circular object debug stringResponseObject :'+stringResponseObject);
           
             }
         } else if(e.message.includes('400') || e.message.includes('404')){
