@@ -5250,8 +5250,28 @@ const axios = __nccwpck_require__(992);
             };
 
             httpHeaders = { headers: defaultHeadersForToken };
-            snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
-        }
+          //  snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
+          axios.post(endpoint, JSON.stringify(payload),{headers: httpHeaders})
+          .then(response => {
+            core.setFailed("Response object :"+response);
+            core.setFailed("Response object :"+JSON.stringify(response));
+            console.log("Response object :"+response);
+            console.log("Response object String :"+JSON.stringify(response));
+            if (response.status === 400) {
+            // Access the complete response body
+                const errorResponse = response.data;
+                console.log('API Error Response:', errorResponse);
+                core.setFailed('API Error Response:', errorResponse);
+            } else {
+            // Handle other response codes
+                const responseData = response.data;
+                core.setFailed('API Response Data:', responseData);
+            }
+        })
+        .catch(error => {
+            console.error('Request Error:', error.message);
+        });
+    }
         else if(username !== '' && password !== '') {
             endpoint = `${instanceUrl}/api/sn_devops/v1/devops/artifact/registration?orchestrationToolId=${toolId}`;
             const tokenBasicAuth = `${username}:${password}`;
