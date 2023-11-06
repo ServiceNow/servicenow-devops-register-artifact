@@ -1,6 +1,6 @@
 const core = require('@actions/core');
 const axios = require('axios');
-//const CircularJSON = require('circular-json');
+const CircularJSON = require('circular-json');
 
 function debugCircularObject(obj, depth = 3) {
 
@@ -127,13 +127,14 @@ function debugCircularObject(obj, depth = 3) {
                 const circularObject = e.response;
 
 // To print the object as JSON, you can use a custom replacer function
-                const jsonString = JSON.stringify(circularObject, (key, value) => {
+/*                const jsonString = JSON.stringify(circularObject, (key, value) => {
                 if (key === 'response' && value === e.response) {
                     return '[Circular]';
                 }
                 return value;
                 });
-
+*/
+                var jsonString=CircularJSON.stringify(e.response);
                 console.log("Circular object :"+jsonString);
                 core.debug('Circular object debug :'+jsonString);
           
