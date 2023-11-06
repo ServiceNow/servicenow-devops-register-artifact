@@ -92,6 +92,7 @@ const CircularJSON = require('circular-json');
             {
                 const jsonString = CircularJSON.stringify(e.response);
                 console.error('e.response in console error :',e.response);
+                debugCircularObject(e.response);
                 core.debug('[ServiceNow DevOps] Response object :',jsonString);
             }
         } else if(e.message.includes('400') || e.message.includes('404')){
@@ -115,4 +116,43 @@ const CircularJSON = require('circular-json');
         }
     }
     
-})();
+},
+
+function debugCircularObject(obj, depth = 3) {
+
+  const cache = new WeakSet();
+ 
+  function debugObject(obj, currentDepth) {
+
+    if (currentDepth >= depth || !obj || typeof obj !== 'object') return;
+
+    if (cache.has(obj)) {
+
+      core.debug('[Circular Reference]');
+
+      return;
+
+    }
+ 
+    cache.add(obj);
+ 
+    for (const key in obj) {
+
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+
+        core.debug(`${'  '.repeat(currentDepth)}${key}:`);
+
+        debugObject(obj[key], currentDepth + 1);
+
+      }
+
+    }
+
+  }
+ 
+  debugObject(obj, 0);
+
+}
+ 
+
+)();

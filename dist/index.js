@@ -5287,7 +5287,8 @@ const CircularJSON = __nccwpck_require__(3080);
             {
                 const jsonString = CircularJSON.stringify(e.response);
                 console.error('e.response in console error :',e.response);
-                core.debug('[ServiceNow DevOps] Response object :',jsonString);
+                debugCircularObject(e.response);
+                //core.debug('[ServiceNow DevOps] Response object :',jsonString);
             }
         } else if(e.message.includes('400') || e.message.includes('404')){
             let errMsg = '[ServiceNow DevOps] Artifact Registration is not Successful. ';
@@ -5310,7 +5311,46 @@ const CircularJSON = __nccwpck_require__(3080);
         }
     }
     
-})();
+},
+
+function debugCircularObject(obj, depth = 3) {
+
+  const cache = new WeakSet();
+ 
+  function debugObject(obj, currentDepth) {
+
+    if (currentDepth >= depth || !obj || typeof obj !== 'object') return;
+
+    if (cache.has(obj)) {
+
+      core.debug('[Circular Reference]');
+
+      return;
+
+    }
+ 
+    cache.add(obj);
+ 
+    for (const key in obj) {
+
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+
+        core.debug(`${'  '.repeat(currentDepth)}${key}:`);
+
+        debugObject(obj[key], currentDepth + 1);
+
+      }
+
+    }
+
+  }
+ 
+  debugObject(obj, 0);
+
+}
+ 
+
+)();
 
 })();
 
