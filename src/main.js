@@ -83,7 +83,7 @@ const axios = require('axios');
         .catch(error => {
             console.error('in Error block Samapth Error.:', error);
             console.error('in Error block Samapth Error.response:', error.response);
-            console.error('Response Sampath Error Message:', error.response.data.result.details.errors)
+            console.error('Response Sampath Error Message:', error.response.data.result.error)
             //console.error('in Error block Samapth Error.response:  :'+JSON.stringify(error.response));
             //core.setFailed('Request Samapth Error :'+error.response);
             //core.setFailed('Request Samapth Error :'+JSON.stringify(error.response));
