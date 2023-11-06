@@ -5032,6 +5032,14 @@ exports.debug = debug; // for test
 
 /***/ }),
 
+/***/ 3080:
+/***/ ((module) => {
+
+module.exports = eval("require")("circular-json");
+
+
+/***/ }),
+
 /***/ 390:
 /***/ ((module) => {
 
@@ -5187,6 +5195,7 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(6024);
 const axios = __nccwpck_require__(992);
+const CircularJSON = __nccwpck_require__(3080);
 
 
 (async function main() {
@@ -5276,8 +5285,9 @@ const axios = __nccwpck_require__(992);
             core.debug('[ServiceNow DevOps] Error: '+JSON.stringify(e));
             if(e.response) 
             {
+                const jsonString = CircularJSON.stringify(e.response);
                 console.error('e.response in console error :',e.response);
-                core.debug('[ServiceNow DevOps] Response object :',e.response);
+                core.debug('[ServiceNow DevOps] Response object :',jsonString);
             }
         } else if(e.message.includes('400') || e.message.includes('404')){
             let errMsg = '[ServiceNow DevOps] Artifact Registration is not Successful. ';

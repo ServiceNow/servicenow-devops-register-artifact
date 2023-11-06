@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const axios = require('axios');
+const CircularJSON = require('circular-json');
 
 
 (async function main() {
@@ -89,8 +90,9 @@ const axios = require('axios');
             core.debug('[ServiceNow DevOps] Error: '+JSON.stringify(e));
             if(e.response) 
             {
+                const jsonString = CircularJSON.stringify(e.response);
                 console.error('e.response in console error :',e.response);
-                core.debug('[ServiceNow DevOps] Response object :',e.response);
+                core.debug('[ServiceNow DevOps] Response object :',jsonString);
             }
         } else if(e.message.includes('400') || e.message.includes('404')){
             let errMsg = '[ServiceNow DevOps] Artifact Registration is not Successful. ';
