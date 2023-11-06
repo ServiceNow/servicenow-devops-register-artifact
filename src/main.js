@@ -107,7 +107,7 @@ const axios = require('axios');
 
 
 
-            axios.post(endpoint, JSON.stringify(payload),{headers: httpHeaders})
+            axios.post(endpoint, payload, httpHeaders)
               .then(response => {
                 core.setFailed("Response object :"+response);
                 core.setFailed("Response object :"+JSON.stringify(response));
@@ -126,6 +126,9 @@ const axios = require('axios');
             })
             .catch(error => {
                 console.error('Request Error:', error.message);
+                console.error('in Error block Samapth Error.:', error);
+                console.error('in Error block Samapth Error.response:', error.response);
+                console.error('Response Sampath Error Message:', error.response.data.result.errors)
             });
 
         }
