@@ -134,7 +134,7 @@ function debugCircularObject(obj, depth = 3) {
                 return value;
                 });
 */
-                var jsonString=CircularJSON.stringify(e.response);
+                var jsonString=CircularJSON.stringify(e.response.data);
                 console.log("Circular object :"+jsonString);
                 core.debug('Circular object debug :'+jsonString);
           
