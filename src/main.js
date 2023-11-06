@@ -9,15 +9,10 @@ function debugCircularObject(obj, depth = 3) {
     function debugObject(obj, currentDepth) {
   
       if (currentDepth >= depth || !obj || typeof obj !== 'object') return;
-  
       if (cache.has(obj)) {
-  
         core.debug('[Circular Reference]');
-  
         return;
-  
       }
-   
       cache.add(obj);
    
       for (const key in obj) {
@@ -27,15 +22,10 @@ function debugCircularObject(obj, depth = 3) {
           core.debug(`${'  '.repeat(currentDepth)}${key}:`);
   
           debugObject(obj[key], currentDepth + 1);
-  
         }
-  
       }
-  
     }
-   
     debugObject(obj, 0);
-  
   }
   
 
@@ -129,10 +119,11 @@ function debugCircularObject(obj, depth = 3) {
                 //const jsonString = CircularJSON.stringify(e.response);
                 //console.error('e.response in console error :',e.response);
                 //console.log('Circular object parsing started');
-//                debugCircularObject(e.response);
-                core.debug('[ServiceNow DevOps] Response object :',e.response.data);
+                //debugCircularObject(e.response);
+                //core.debug('[ServiceNow DevOps] Response object :',e.response.data);
                 console.error('console.error, [ServiceNow DevOps] Response object :',e.response.data);
-                core.debug('[ServiceNow DevOps] Response object String :',JSON.stringify(e.response.data));
+                //core.debug('[ServiceNow DevOps] Response object String :',JSON.stringify(e.response.data));
+                console.debug('console.debug response data :',e.response.data);
             }
         } else if(e.message.includes('400') || e.message.includes('404')){
             let errMsg = '[ServiceNow DevOps] Artifact Registration is not Successful. ';
