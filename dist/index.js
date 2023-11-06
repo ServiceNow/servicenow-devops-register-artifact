@@ -5312,6 +5312,9 @@ function debugCircularObject(obj, depth = 3) {
                 //core.debug('[ServiceNow DevOps] Response object String :',JSON.stringify(e.response.data));
                 console.debug('console.debug response data :',e.response.data);
                 const chunks=[];
+                e.response.on("data", (chunk) => {
+                    chunks.push(chunk);
+                  });
                 let responseBodyStr = Buffer.concat(chunks).toString();
                 let responseBody = JSON.parse(responseBodyStr);
                 result = responseBody.result;
