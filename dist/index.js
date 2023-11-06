@@ -5275,19 +5275,19 @@ const axios = __nccwpck_require__(992);
             core.setFailed('Invalid username and password or Invalid token and toolid. Please correct the input parameters and try again.');
             core.debug('[ServiceNow DevOps] Error: '+JSON.stringify(e));
         } else if(e.message.includes('400') || e.message.includes('404')){
-            let errMsg = 'ServiceNow DevOps Artifact Registration is not Successful.';
+            let errMsg = '[ServiceNow DevOps] Artifact Registration is not Successful. ';
             let errMsgSuffix = ' Please provide valid inputs.';
             let responseData = e.response.data;
             if (responseData && responseData.result && responseData.result.errorMessage) {
                 errMsg = errMsg + responseData.result.errorMessage + errMsgSuffix;
-                core.setFailed('[ServiceNow DevOps] Artifact Registration :'+errMsg);
+                core.setFailed(errMsg);
             }
             else if (responseData && responseData.result && responseData.result.details && responseData.result.details.errors) {
                 let errors = responseData.result.details.errors;
                 for (var index in errors) {
                     errMsg = errMsg + errors[index].message + errMsgSuffix;
                 }
-                core.setFailed('[ServiceNow DevOps] Artifact Registration :'+errMsg);
+                core.setFailed(errMsg);
             }
         } else {
             core.setFailed('ServiceNow Artifact Versions are NOT created. Please check ServiceNow logs for more details.');
