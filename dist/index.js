@@ -5250,29 +5250,7 @@ const axios = __nccwpck_require__(992);
             };
 
             httpHeaders = { headers: defaultHeadersForToken };
-          //  snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
-          axios.post(endpoint, payload,{headers: httpHeaders})
-          .then(response => {
-            core.setFailed("Response object :"+response);
-            core.setFailed("Response object :"+JSON.stringify(response));
-            console.log("Response object :"+response);
-            console.log("Response object String :"+JSON.stringify(response));
-            if (response.status === 400) {
-            // Access the complete response body
-                const errorResponse = response.data;
-                console.log('API Error Response:', errorResponse);
-                core.setFailed('API Error Response:', errorResponse);
-            } else {
-            // Handle other response codes
-                const responseData = response.data;
-                core.setFailed('API Response Data:', responseData);
-            }
-        })
-        .catch(error => {
-            console.error('Request Error:', error.message);
-            core.setFailed('Request Error :'+error);
-            core.setFailed('Request Error String :'+JSON.stringify(error));
-        });
+            snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
     }
         else if(username !== '' && password !== '') {
             endpoint = `${instanceUrl}/api/sn_devops/v1/devops/artifact/registration?orchestrationToolId=${toolId}`;
@@ -5285,31 +5263,7 @@ const axios = __nccwpck_require__(992);
             };
 
             httpHeaders = { headers: defaultHeadersForBasicAuth };
-//            snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
-
-
-
-            axios.post(endpoint, JSON.stringify(payload),{headers: httpHeaders})
-              .then(response => {
-                core.setFailed("Response object :"+response);
-                core.setFailed("Response object :"+JSON.stringify(response));
-                console.log("Response object :"+response);
-                console.log("Response object String :"+JSON.stringify(response));
-                if (response.status === 400) {
-                // Access the complete response body
-                    const errorResponse = response.data;
-                    console.log('API Error Response:', errorResponse);
-                    core.setFailed('API Error Response:', errorResponse);
-                } else {
-                // Handle other response codes
-                    const responseData = response.data;
-                    core.setFailed('API Response Data:', responseData);
-                }
-            })
-            .catch(error => {
-                console.error('Request Error:', error.message);
-            });
-
+            snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
         }
         else {
             core.setFailed("For Basic Auth, Username and Password is mandatory for integration user authentication");
@@ -5318,37 +5272,26 @@ const axios = __nccwpck_require__(992);
         if (e.message.includes('ECONNREFUSED') || e.message.includes('ENOTFOUND') || e.message.includes('405')) {
             core.setFailed('ServiceNow Instance URL is NOT valid. Please correct the URL and try again.');
         } else if (e.message.includes('401')) {
-            core.setFailed('Invalid Credentials. Please correct the credentials and try again.');
-
-
-
-
-
-
-
-
-
-              core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.message}`);
-              core.setFailed("[ServiceNow DevOps] Register Artifact, Error message :"+JSON.stringify(e.message));
-
-  //          core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.stack}`);
-
-//            core.setFailed("Exception :"+JSON.stringify(e));
-
-            core.setFailed("Header JSON :"+JSON.stringify(e.config.headers)+", Data JSON :"+JSON.stringify(e.config.data));
-//            core.setFailed(JSON.stringify(e.response));
-
-            core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.response}`);            
+            core.setFailed('Invalid username and password or Invalid token and toolid. Please correct the input parameters and try again.');
+            core.debug('[ServiceNow DevOps] Error: '+JSON.stringify(e));
+        } else if(e.message.includes('400') || err.message.includes('400')){
+            let errMsg = 'ServiceNow DevOps Artifact Registration is not Successful.';
+            let errMsgSuffix = ' Please provide valid inputs.';
+            let responseData = err.response.data;
+            if (responseData && responseData.result && responseData.result.errorMessage) {
+                errMsg = errMsg + responseData.result.errorMessage + errMsgSuffix;
+                displayErrorMsg(errMsg);
+            }
+            else if (responseData && responseData.result && responseData.result.details && responseData.result.details.errors) {
+                let errors = responseData.result.details.errors;
+                for (var index in errors) {
+                    errMsg = errMsg + errors[index].message + errMsgSuffix;
+                }
+                displayErrorMsg(errMsg);
+            }
         } else {
             core.setFailed('ServiceNow Artifact Versions are NOT created. Please check ServiceNow logs for more details.');
-            core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.message}`);
-            core.setFailed(`[ServiceNow DevOps] Register Artifact, Error message :${e.stack}`);
-            if(e.response){
-            console.log("Response data :"+e.response);
-//            console.log("Response data :"+JSON.stringify(e.response));
-            console.log("Response Status :"+e.response.status);
-            console.log("Response Status Text :"+e.response.statusText);
-            }
+            core.debug('[ServiceNow DevOps] Error: '+JSON.stringify(e));
         }
     }
     
