@@ -66,8 +66,8 @@ const axios = require('axios');
           //  snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
           axios.post(endpoint, payload, httpHeaders)
           .then(response => {
-            core.setFailed("in Then block  response :"+response);
-            console.log("in Then block  response :"+response);
+            core.setFailed("in Then block  response :"+response.data);
+            console.log("in Then block  response :"+response.data);
             //console.log("Response object String :"+JSON.stringify(response));
             if (response.status === 400) {
             // Access the complete response body
@@ -83,6 +83,7 @@ const axios = require('axios');
         .catch(error => {
             console.error('in Error block Samapth Error.:', error);
             console.error('in Error block Samapth Error.response:', error.response);
+            console.error('Response Sampath Error Message:', error.response.data.result.details.errors)
             //console.error('in Error block Samapth Error.response:  :'+JSON.stringify(error.response));
             //core.setFailed('Request Samapth Error :'+error.response);
             //core.setFailed('Request Samapth Error :'+JSON.stringify(error.response));
