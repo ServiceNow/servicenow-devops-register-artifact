@@ -5253,10 +5253,9 @@ const axios = __nccwpck_require__(114);
           //  snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
           axios.post(endpoint, payload, httpHeaders)
           .then(response => {
-            core.setFailed("Response object :"+response);
-            core.setFailed("Response object :"+JSON.stringify(response));
-            console.log("Response object :"+response);
-            console.log("Response object String :"+JSON.stringify(response));
+            core.setFailed("in Then block  response :"+response);
+            console.log("in Then block  response :"+response);
+            //console.log("Response object String :"+JSON.stringify(response));
             if (response.status === 400) {
             // Access the complete response body
                 const errorResponse = response.data;
@@ -5269,13 +5268,14 @@ const axios = __nccwpck_require__(114);
             }
         })
         .catch(error => {
-            console.error('Request Samapth Error:', error.response);
-            console.error('Request Samapth Error :'+JSON.stringify(error.response));
-            core.setFailed('Request Samapth Error :'+error.response);
-            core.setFailed('Request Samapth Error :'+JSON.stringify(error.response));
-            console.error('Request Error:', error.message);
-            core.setFailed('Request Error :'+error);
-            core.setFailed('Request Error String :'+JSON.stringify(error));
+            console.error('in Error block Samapth Error.:', error);
+            console.error('in Error block Samapth Error.response:', error.response);
+            //console.error('in Error block Samapth Error.response:  :'+JSON.stringify(error.response));
+            //core.setFailed('Request Samapth Error :'+error.response);
+            //core.setFailed('Request Samapth Error :'+JSON.stringify(error.response));
+            //console.error('Request Error:', error.message);
+            //core.setFailed('Request Error :'+error);
+            //core.setFailed('Request Error String :'+JSON.stringify(error));
         });
     }
         else if(username !== '' && password !== '') {
