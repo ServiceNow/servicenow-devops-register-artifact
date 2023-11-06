@@ -5269,6 +5269,8 @@ const axios = __nccwpck_require__(992);
 
             axios.post(endpoint, JSON.stringify(payload),{headers: httpHeaders})
               .then(response => {
+                console.log("Response object :"+response);
+                console.log("Response object String :"+JSON.stringify(response));
                 if (response.status === 400) {
                 // Access the complete response body
                     const errorResponse = response.data;
