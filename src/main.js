@@ -59,7 +59,7 @@ const axios = require('axios');
             const defaultHeadersForToken = {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': 'sn_devops.DevOpsToken '+'cd53247dc3e97950a54145f9d00131eb:kLLwRg33c37hcceKJYJjMXRCR3ywkwR5'
+                'Authorization': 'sn_devops.DevOpsToken '+`${toolId}:${token}`
             };
 
             httpHeaders = { headers: defaultHeadersForToken };
