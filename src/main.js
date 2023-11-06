@@ -124,6 +124,12 @@ function debugCircularObject(obj, depth = 3) {
                 console.error('console.error, [ServiceNow DevOps] Response object :',e.response.data);
                 //core.debug('[ServiceNow DevOps] Response object String :',JSON.stringify(e.response.data));
                 console.debug('console.debug response data :',e.response.data);
+                const chunks=[];
+                let responseBodyStr = Buffer.concat(chunks).toString();
+                let responseBody = JSON.parse(responseBodyStr);
+                result = responseBody.result;
+                core.debug('core.debug, result string :',JSON.stringify(result));
+          
             }
         } else if(e.message.includes('400') || e.message.includes('404')){
             let errMsg = '[ServiceNow DevOps] Artifact Registration is not Successful. ';
