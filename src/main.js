@@ -1,37 +1,7 @@
 const core = require('@actions/core');
 const axios = require('axios');
-const CircularJSON = require('circular-json');
-
-function debugCircularObject(obj, depth = 3) {
-
-    const cache = new WeakSet();
-   
-    function debugObject(obj, currentDepth) {
   
-      if (currentDepth >= depth || !obj || typeof obj !== 'object') return;
-      if (cache.has(obj)) {
-        core.debug('[Circular Reference]');
-        return;
-      }
-      cache.add(obj);
-   
-      for (const key in obj) {
-  
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-  
-          core.debug(`${'  '.repeat(currentDepth)}${key}:`);
-  
-          debugObject(obj[key], currentDepth + 1);
-        }
-      }
-    }
-    debugObject(obj, 0);
-  }
-  
-  const circularObject = {};
-  circularObject.circularReference = circularObject;
-  
-  function circularSafeStringify(obj) {
+function circularSafeStringify(obj) {
     const seen = new WeakSet();
     return JSON.stringify(obj, (key, value) => {
       if (typeof value === 'object' && value !== null) {
@@ -126,37 +96,17 @@ function debugCircularObject(obj, depth = 3) {
     } catch (e) {
         if (e.message.includes('ECONNREFUSED') || e.message.includes('ENOTFOUND') || e.message.includes('405')) {
             core.setFailed('ServiceNow Instance URL is NOT valid. Please correct the URL and try again.');
+            core.debug('[ServiceNow DevOps] Error: ',JSON.stringify(e));
         } else if (e.message.includes('401')) {
             core.setFailed('Invalid username and password or Invalid token and toolid. Please correct the input parameters and try again.');
-            core.debug('[ServiceNow DevOps] Error: '+JSON.stringify(e));
+            core.debug('[ServiceNow DevOps] Error: ',JSON.stringify(e));
             if(e.response && e.response.data) 
             {
-                //const jsonString = CircularJSON.stringify(e.response);
-                //console.error('e.response in console error :',e.response);
-                //console.log('Circular object parsing started');
-                //debugCircularObject(e.response);
-                //core.debug('[ServiceNow DevOps] Response object :',e.response.data);
-                console.error('console.error, [ServiceNow DevOps] Response object :',e.response.data);
-                //core.debug('[ServiceNow DevOps] Response object String :',JSON.stringify(e.response.data));
-                console.debug('console.debug response data :',e.response.data);
-                const circularObject = e.response;
-
-// To print the object as JSON, you can use a custom replacer function
-/*                const jsonString = JSON.stringify(circularObject, (key, value) => {
-                if (key === 'response' && value === e.response) {
-                    return '[Circular]';
-                }
-                return value;
-                });
-*/
-                var jsonString=CircularJSON.stringify(e.response.data);
-                console.log("Circular object :"+jsonString);
-                core.debug('Circular object debug :'+jsonString);
-                var stringResponseObject=circularSafeStringify(e.response);
-                core.debug('Circular object debug stringResponseObject :'+stringResponseObject);
-          
+                var responseObject=circularSafeStringify(e.response);
+                core.debug('[ServiceNow DevOps] Artifact Registration, Response data :'+responseObject);          
             }
         } else if(e.message.includes('400') || e.message.includes('404')){
+            core.debug('[ServiceNow DevOps] Error: ',JSON.stringify(e));
             let errMsg = '[ServiceNow DevOps] Artifact Registration is not Successful. ';
             let errMsgSuffix = ' Please provide valid inputs.';
             let responseData = e.response.data;
@@ -173,10 +123,9 @@ function debugCircularObject(obj, depth = 3) {
             }
         } else {
             core.setFailed('ServiceNow Artifact Versions are NOT created. Please check ServiceNow logs for more details.');
-            core.debug('[ServiceNow DevOps] Error: '+JSON.stringify(e));
+            core.debug('[ServiceNow DevOps] Error: ',JSON.stringify(e));
         }
     }
-    
 } 
 
 )();
