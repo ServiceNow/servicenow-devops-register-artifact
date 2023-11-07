@@ -96,7 +96,7 @@ function circularSafeStringify(obj) {
     } catch (e) {
         if (e.message.includes('ECONNREFUSED') || e.message.includes('ENOTFOUND') || e.message.includes('405')) {
             core.setFailed('ServiceNow Instance URL is NOT valid. Please correct the URL and try again.');
-            core.debug('[ServiceNow DevOps] Error: ',JSON.stringify(e));
+            core.debug('[ServiceNow DevOps] Error: '+JSON.stringify(e));
         } else if (e.message.includes('401')) {
             core.setFailed('Invalid username and password or Invalid token and toolid. Please correct the input parameters and try again.');
             core.debug('[ServiceNow DevOps] Error: '+JSON.stringify(e));
@@ -123,7 +123,7 @@ function circularSafeStringify(obj) {
             }
         } else {
             core.setFailed('ServiceNow Artifact Versions are NOT created. Please check ServiceNow logs for more details.');
-            core.debug('[ServiceNow DevOps] Error: ',JSON.stringify(e));
+            core.debug('[ServiceNow DevOps] Error: '+JSON.stringify(e));
         }
     }
 } 
