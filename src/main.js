@@ -94,7 +94,7 @@ function circularSafeStringify(obj) {
             core.setFailed("For Basic Auth, Username and Password is mandatory for integration user authentication");
         }
     } catch (e) {
-        core.debug('[ServiceNow DevOps] Error: ',JSON.stringify(e));
+        core.debug('[ServiceNow DevOps] Artifact Registration, Error: '+JSON.stringify(e));
         if (e.message.includes('ECONNREFUSED') || e.message.includes('ENOTFOUND') || e.message.includes('405')) {
             core.setFailed('ServiceNow Instance URL is NOT valid. Please correct the URL and try again.');
         } else if (e.message.includes('401')) {
