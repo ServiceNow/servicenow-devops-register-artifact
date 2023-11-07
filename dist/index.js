@@ -5286,10 +5286,10 @@ function circularSafeStringify(obj) {
             core.debug('[ServiceNow DevOps] Error: ',JSON.stringify(e));
         } else if (e.message.includes('401')) {
             core.setFailed('Invalid username and password or Invalid token and toolid. Please correct the input parameters and try again.');
-            core.debug('[ServiceNow DevOps] Error: ',JSON.stringify(e));
+            core.debug('[ServiceNow DevOps] Error: '+JSON.stringify(e));
             if(e.response && e.response.data) 
             {
-                var responseObject=circularSafeStringify(e.response);
+                var responseObject=circularSafeStringify(e.response.data);
                 core.debug('[ServiceNow DevOps] Artifact Registration, Response data :'+responseObject);          
             }
         } else if(e.message.includes('400') || e.message.includes('404')){
