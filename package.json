@@ -26,7 +26,6 @@
   "dependencies": {
     "@actions/core": "^1.8.2",
     "axios": "^0.25.0",
-    "circular-json": "^0.5.9",
     "follow-redirects": "^1.15.0"
   }
 }
