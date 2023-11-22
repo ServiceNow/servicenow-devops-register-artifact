@@ -5287,7 +5287,7 @@ function circularSafeStringify(obj) {
     } catch (e) {
         core.debug('[ServiceNow DevOps] Artifact Registration, Error: '+JSON.stringify(e));
         if(e.response && e.response.data) {
-            var responseObject=circularSafeStringify(e.response.data);
+            var responseObject=circularSafeStringify(e.response);
             core.debug('[ServiceNow DevOps] Artifact Registration, Status code :'+e.response.statusCode+', Response data :'+responseObject);          
         }
 
