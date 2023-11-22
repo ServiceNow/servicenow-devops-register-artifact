@@ -5287,8 +5287,8 @@ function circularSafeStringify(obj) {
     } catch (e) {
         core.debug('[ServiceNow DevOps] Artifact Registration, Error: '+JSON.stringify(e));
         if(e.response && e.response.data) {
-            var responseObject=circularSafeStringify(e.response);
-            core.debug('[ServiceNow DevOps] Artifact Registration, Status code :'+e.response.statusCode+', Response data :'+responseObject);          
+            var responseObject=circularSafeStringify(e.response.data);
+            core.debug('[ServiceNow DevOps] Artifact Registration, Status code :'+e.response.status+', Response data :'+responseObject);          
         }
 
         if (e.message.includes('ECONNREFUSED') || e.message.includes('ENOTFOUND') || e.message.includes('405')) {
