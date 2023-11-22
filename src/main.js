@@ -77,7 +77,7 @@ function circularSafeStringify(obj) {
             httpHeaders = { headers: defaultHeadersForToken };
             core.debug("[ServiceNow DevOps], Sending Request for Artifact Registration, Request options :"+JSON.stringify(httpHeaders)+", Payload :"+JSON.stringify(payload));
             snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
-            core.debug("[ServiceNow DevOps], Receiving response for Artifact Registration, Response :"+JSON.stringify(snowResponse));
+//            core.debug("[ServiceNow DevOps], Receiving response for Artifact Registration, Response :"+JSON.stringify(snowResponse));
         }
         else if(username !== '' && password !== '') {
             endpoint = `${instanceUrl}/api/sn_devops/v1/devops/artifact/registration?orchestrationToolId=${toolId}`;
@@ -92,7 +92,7 @@ function circularSafeStringify(obj) {
             httpHeaders = { headers: defaultHeadersForBasicAuth };
             core.debug("[ServiceNow DevOps], Sending Request for Artifact Registration, Request options :"+JSON.stringify(httpHeaders)+", Payload :"+JSON.stringify(payload));
             snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
-            core.debug("[ServiceNow DevOps], Receiving response for Artifact Registration, Response :"+JSON.stringify(snowResponse));
+  //          core.debug("[ServiceNow DevOps], Receiving response for Artifact Registration, Response :"+JSON.stringify(snowResponse));
         }
         else {
             core.setFailed("For Basic Auth, Username and Password is mandatory for integration user authentication");
