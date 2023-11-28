@@ -5188,10 +5188,11 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(6024);
 const axios = __nccwpck_require__(992);
   
-function circularSafeStringify(obj) {
+function circularSafeStringify(obj) {    
     const seen = new WeakSet();
     return JSON.stringify(obj, (key, value) => {
-      if (typeof value === 'object' && value !== null && key!=='_sessionCache') {
+      key==='_sessionCache' ? undefined : value;
+      if (typeof value === 'object' && value !== null) {
         if (seen.has(value)) {
           return '[Circular]';
         }

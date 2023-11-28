@@ -1,10 +1,11 @@
 const core = require('@actions/core');
 const axios = require('axios');
   
-function circularSafeStringify(obj) {
+function circularSafeStringify(obj) {    
     const seen = new WeakSet();
     return JSON.stringify(obj, (key, value) => {
-      if (typeof value === 'object' && value !== null && key!=='_sessionCache') {
+      key==='_sessionCache' ? undefined : value;
+      if (typeof value === 'object' && value !== null) {
         if (seen.has(value)) {
           return '[Circular]';
         }
