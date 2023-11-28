@@ -5191,7 +5191,7 @@ const axios = __nccwpck_require__(992);
 function circularSafeStringify(obj) {
     const seen = new WeakSet();
     return JSON.stringify(obj, (key, value) => {
-      if (typeof value === 'object' && value !== null && key!=="_sessionCache") {
+      if (typeof value === 'object' && value !== null && key!=='_sessionCache') {
         if (seen.has(value)) {
           return '[Circular]';
         }
