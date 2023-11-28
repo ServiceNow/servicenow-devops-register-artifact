@@ -4,7 +4,7 @@ const axios = require('axios');
 function circularSafeStringify(obj) {
     const seen = new WeakSet();
     return JSON.stringify(obj, (key, value) => {
-      if (typeof value === 'object' && value !== null && key==="_sessionCache") {
+      if (typeof value === 'object' && value !== null && key!=="_sessionCache") {
         if (seen.has(value)) {
           return '[Circular]';
         }
@@ -78,7 +78,7 @@ function circularSafeStringify(obj) {
             core.debug("[ServiceNow DevOps], Sending Request for Artifact Registration, Request options :"+JSON.stringify(httpHeaders)+", Payload :"+JSON.stringify(payload)+"\n");
             snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
             if(snowResponse.data) core.debug("[ServiceNow DevOps], Receiving response for Artifact Registration, Response :"+circularSafeStringify(snowResponse)+"\n");
-            core.debug('Session cache :'+JSON.stringify(snowResponse._sessionCache));
+            core.debug('Session cache :'+JSON.stringify(snowResponse.request.agent._sessionCache));
         }
         else if(username !== '' && password !== '') {
             endpoint = `${instanceUrl}/api/sn_devops/v1/devops/artifact/registration?orchestrationToolId=${toolId}`;
