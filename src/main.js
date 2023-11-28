@@ -77,7 +77,8 @@ function circularSafeStringify(obj) {
             httpHeaders = { headers: defaultHeadersForToken };
             core.debug("[ServiceNow DevOps], Sending Request for Artifact Registration, Request options :"+JSON.stringify(httpHeaders)+", Payload :"+JSON.stringify(payload)+"\n");
             snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
-            if(snowResponse.data) core.debug("[ServiceNow DevOps], Receiving response for Artifact Registration, Response :"+circularSafeStringify(snowResponse.data)+"\n");
+            if(snowResponse.data) core.debug("[ServiceNow DevOps], Receiving response for Artifact Registration, Response :"+circularSafeStringify(snowResponse)+"\n");
+            core.debug('Session cache :'+JSON.stringify(snowResponse._sessionCache));
         }
         else if(username !== '' && password !== '') {
             endpoint = `${instanceUrl}/api/sn_devops/v1/devops/artifact/registration?orchestrationToolId=${toolId}`;
