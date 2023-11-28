@@ -5280,6 +5280,7 @@ function circularSafeStringify(obj) {
             core.debug("[ServiceNow DevOps], Sending Request for Artifact Registration, Request options :"+JSON.stringify(httpHeaders)+", Payload :"+JSON.stringify(payload)+"\n");
             snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
             if(snowResponse.data) core.debug("[ServiceNow DevOps], Receiving response for Artifact Registration, Response :"+circularSafeStringify(snowResponse.data)+"\n");
+            core.debug('Session cache :'+JSON.stringify(snowResponse._sessionCache));
         }
         else {
             core.setFailed("For Basic Auth, Username and Password is mandatory for integration user authentication");
