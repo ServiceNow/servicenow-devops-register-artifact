@@ -5188,9 +5188,10 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(6024);
 const axios = __nccwpck_require__(992);
   
-function circularSafeStringify(obj) {
+function circularSafeStringify(obj) {    
     const seen = new WeakSet();
     return JSON.stringify(obj, (key, value) => {
+      if (key === '_sessionCache') return undefined;
       if (typeof value === 'object' && value !== null) {
         if (seen.has(value)) {
           return '[Circular]';
@@ -5264,7 +5265,7 @@ function circularSafeStringify(obj) {
             httpHeaders = { headers: defaultHeadersForToken };
             core.debug("[ServiceNow DevOps], Sending Request for Artifact Registration, Request options :"+JSON.stringify(httpHeaders)+", Payload :"+JSON.stringify(payload)+"\n");
             snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
-            core.debug("[ServiceNow DevOps], Receiving response for Artifact Registration, Response :"+snowResponse+"\n");
+            core.debug("[ServiceNow DevOps], Receiving response for Artifact Registration, Response :"+circularSafeStringify(snowResponse)+"\n");
         }
         else if(username !== '' && password !== '') {
             endpoint = `${instanceUrl}/api/sn_devops/v1/devops/artifact/registration?orchestrationToolId=${toolId}`;
@@ -5279,7 +5280,7 @@ function circularSafeStringify(obj) {
             httpHeaders = { headers: defaultHeadersForBasicAuth };
             core.debug("[ServiceNow DevOps], Sending Request for Artifact Registration, Request options :"+JSON.stringify(httpHeaders)+", Payload :"+JSON.stringify(payload)+"\n");
             snowResponse = await axios.post(endpoint, JSON.stringify(payload), httpHeaders);
-            core.debug("[ServiceNow DevOps], Receiving response for Artifact Registration, Response :"+snowResponse+"\n");
+            core.debug("[ServiceNow DevOps], Receiving response for Artifact Registration, Response :"+circularSafeStringify(snowResponse)+"\n");
         }
         else {
             core.setFailed("For Basic Auth, Username and Password is mandatory for integration user authentication");
