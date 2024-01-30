@@ -30,7 +30,7 @@ registerartifact:
     runs-on: ubuntu-latest
     steps:
       - name: ServiceNow Register Artifact
-        uses: ServiceNow/servicenow-devops-register-artifact@v2.0.0
+        uses: ServiceNow/servicenow-devops-register-artifact@v3.1.0
         with:
           devops-integration-token: ${{ secrets.SN_DEVOPS_INTEGRATION_TOKEN }}
           instance-url: ${{ secrets.SN_INSTANCE_URL }}
@@ -46,7 +46,7 @@ registerartifact:
     runs-on: ubuntu-latest
     steps:
       - name: ServiceNow Register Artifact
-        uses: ServiceNow/servicenow-devops-register-artifact@v2.0.0
+        uses: ServiceNow/servicenow-devops-register-artifact@v3.1.0
         with:
           devops-integration-user-name: ${{ secrets.SN_DEVOPS_USER }}
           devops-integration-user-password: ${{ secrets.SN_DEVOPS_PASSWORD }}

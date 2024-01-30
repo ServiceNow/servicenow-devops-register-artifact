@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: ServiceNow Register Artifact
-        uses: ServiceNow/servicenow-devops-register-artifact@v2.0.0
+        uses: ServiceNow/servicenow-devops-register-artifact@v3.1.0
         id: update
         with:
           devops-integration-token: ${{ secrets.SN_DEVOPS_INTEGRATION_TOKEN }}
